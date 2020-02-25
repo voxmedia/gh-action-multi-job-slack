@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/voxmedia/gh-action-multi-job-slack#readme",
   "dependencies": {
+    "@actions/artifact": "^0.1.0",
     "@actions/core": "^1.1.1",
     "slack": "^11.0.2"
   },
