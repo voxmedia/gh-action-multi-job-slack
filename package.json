@@ -28,6 +28,7 @@
   "dependencies": {
     "@actions/artifact": "^0.1.0",
     "@actions/core": "^1.1.1",
+    "@actions/io": "^1.0.2",
     "slack": "^11.0.2"
   },
   "devDependencies": {
