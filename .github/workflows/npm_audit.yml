@@ -1,0 +1,9 @@
+name: Audit node modules
+on: [push, pull_request]
+
+jobs:
+  units:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: npm audit

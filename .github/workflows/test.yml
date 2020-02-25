@@ -1,13 +1,7 @@
-name: "units-test"
-on:
-  pull_request:
-  push:
-    branches:
-      - master
-      - 'releases/*'
+name: Tests
+on: [push, pull_request]
 
 jobs:
-  # unit tests
   units:
     runs-on: ubuntu-latest
     steps:
@@ -15,7 +9,7 @@ jobs:
     - run: npm ci
     - run: npm test
 
-  # test action works running from the graph  
+  # test action works running from the graph
   test:
     runs-on: ubuntu-latest
     steps:
