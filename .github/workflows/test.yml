@@ -9,12 +9,12 @@ jobs:
     - run: npm ci
     - run: npm test
 
-  # test action works running from the graph
-  TODO: enable this once we have a 1.0 release
-  github_graph:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: voxmedia/gh-action-multi-job-slack@${{ github.head_ref }}
-    - uses: ./
-      with:
-        milliseconds: 1000
+  # # test action works running from the graph
+  # TODO: enable this once we have a 1.0 release
+  # github_graph:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: voxmedia/gh-action-multi-job-slack@v1.0.0
+  #   - uses: ./
+  #     with:
+  #       milliseconds: 1000
