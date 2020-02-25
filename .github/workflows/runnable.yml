@@ -1,7 +1,8 @@
 name: Ensure action is runnable
-push:
-  branches:
-    - master
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   runnable:
