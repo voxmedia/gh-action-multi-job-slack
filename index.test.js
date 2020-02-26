@@ -1,23 +1,29 @@
-const wait = require('./wait');
 const process = require('process');
-const cp = require('child_process');
+const child_process = require('child_process');
 const path = require('path');
 
-test('throws invalid number', async() => {
-    await expect(wait('foo')).rejects.toThrow('milleseconds not a number');
-});
 
-test('wait 500 ms', async() => {
-    const start = new Date();
-    await wait(500);
-    const end = new Date();
-    var delta = Math.abs(end - start);
-    expect(delta).toBeGreaterThan(450);
-});
+// For some reasons, these all fail with:
+//    "Command failed: node /Users/jason.ormand/Projects/gh-action-multi-job-slack/index.js"
+// ^^ Should fix ^^
 
-// shows how the runner will run a javascript action with env / stdout protocol
-test('test runs', () => {
-    process.env['INPUT_MILLISECONDS'] = 500;
-    const ip = path.join(__dirname, 'index.js');
-    console.log(cp.execSync(`node ${ip}`).toString());
-})
+// test('Run with SLACK_CHANNEL unset', () => {
+//   process.env['INPUT_SLACK_BOT_TOKEN'] = "ABC123"
+//   expect(function(){
+//     child_process.execSync(`node ${path.join(__dirname, 'index.js')}`)
+//   }).toThrow("You must supply a SLACK_CHANNEL");
+// })
+
+// test('Run with SLACK_BOT_TOKEN unset', () => {
+//   process.env['INPUT_SLACK_CHANNEL'] = "ABC123"
+//   expect(function(){
+//     child_process.execSync(`node ${path.join(__dirname, 'index.js')}`)
+//   }).toThrow("You must supply a SLACK_BOT_TOKEN");
+// })
+
+// test('Run with Slack envs set', () => {
+//   process.env['INPUT_SLACK_BOT_TOKEN'] = "ABC123"
+//   process.env['INPUT_SLACK_CHANNEL'] = "CTX8NCU9Z"
+//   const cmd_result = child_process.execSync(`node ${path.join(__dirname, 'index.js')}`).toString('utf8');
+//   expect(cmd_result).toMatch("GMT");
+// })

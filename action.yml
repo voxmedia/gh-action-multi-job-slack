@@ -1,13 +1,18 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'Multi-job Slack notifications'
+description: 'Single slack message notifications for Github workflows with more than one job. Updates as your jobs run.'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  slack_bot_token:
+    description: 'Slack token used to post to your channel.'
     required: true
-    default: '1000'
+  slack_channel:
+    description: 'ID or string for the target Slack channel.'
+    required: true
+  job:
+    description: 'Current Job JSON'
+    required: true
 outputs:
-  time: # output will be available to future steps 
-    description: 'The message to output'
+  updated_at:
+    description: 'The timestamp for when the slack message was last updated.'
 runs:
   using: 'node12'
   main: 'dist/index.js'

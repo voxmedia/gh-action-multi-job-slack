@@ -1,19 +1,17 @@
 const core = require('@actions/core');
-const wait = require('./wait');
 
 
 // most @actions toolkit packages have async methods
 async function run() {
-  try { 
-    const ms = core.getInput('milliseconds');
-    console.log(`Waiting ${ms} milliseconds ...`)
+  try {
+    const slack_bot_token = process.env.SLACK_BOT_TOKEN;
+    const slack_channel = process.env.SLACK_CHANNEL;
 
-    core.debug((new Date()).toTimeString())
-    await wait(parseInt(ms));
-    core.debug((new Date()).toTimeString())
+    if (!slack_bot_token) throw new Error("You must supply a SLACK_BOT_TOKEN")
+    if (!slack_channel) throw new Error("You must supply a SLACK_CHANNEL")
 
-    core.setOutput('time', new Date().toTimeString());
-  } 
+    core.setOutput('updated_at', (new Date).toUTCString());
+  }
   catch (error) {
     core.setFailed(error.message);
   }
