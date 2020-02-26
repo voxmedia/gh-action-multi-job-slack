@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 var fs = require('fs');
 
-function init(github_token) {
+async function init(github_token) {
   console.log("Initing!")
 
   const octokit = new github.GitHub(github_token);
@@ -26,21 +26,21 @@ function init(github_token) {
     event_path: event_path
   })
 
-  const { data: octo_workflow } = octokit.actions.getWorkflow({
+  const { data: octo_workflow } = await octokit.actions.getWorkflow({
     owner,
     repo,
     workflow_id: run_id
   });
   console.log({ octo_workflow });
 
-  const { data: octo_workflow_run } = octokit.actions.getWorkflowRun({
+  const { data: octo_workflow_run } = await octokit.actions.getWorkflowRun({
     owner,
     repo,
     run_id
   });
   console.log({ octo_workflow_run });
 
-  const { data: octo_jobs } = octokit.actions.listJobsForWorkflowRun({
+  const { data: octo_jobs } = await octokit.actions.listJobsForWorkflowRun({
     owner,
     repo,
     run_id
