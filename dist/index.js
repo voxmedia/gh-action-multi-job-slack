@@ -54,21 +54,19 @@ module.exports = require("os");
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
 const core = __webpack_require__(470);
-const wait = __webpack_require__(949);
 
 
 // most @actions toolkit packages have async methods
 async function run() {
-  try { 
-    const ms = core.getInput('milliseconds');
-    console.log(`Waiting ${ms} milliseconds ...`)
+  try {
+    const slack_bot_token = process.env.SLACK_BOT_TOKEN;
+    const slack_channel = process.env.SLACK_CHANNEL;
 
-    core.debug((new Date()).toTimeString())
-    wait(parseInt(ms));
-    core.debug((new Date()).toTimeString())
+    if (!slack_bot_token) throw new Error("You must supply a SLACK_BOT_TOKEN")
+    if (!slack_channel) throw new Error("You must supply a SLACK_CHANNEL")
 
-    core.setOutput('time', new Date().toTimeString());
-  } 
+    core.setOutput('updated_at', (new Date).toUTCString());
+  }
   catch (error) {
     core.setFailed(error.message);
   }
@@ -340,24 +338,6 @@ exports.group = group;
 /***/ (function(module) {
 
 module.exports = require("path");
-
-/***/ }),
-
-/***/ 949:
-/***/ (function(module) {
-
-let wait = function(milliseconds) {
-  return new Promise((resolve, reject) => {
-    if (typeof(milliseconds) !== 'number') { 
-      throw new Error('milleseconds not a number'); 
-    }
-
-    setTimeout(() => resolve("done!"), milliseconds)
-  });
-}
-
-module.exports = wait;
-
 
 /***/ })
 
