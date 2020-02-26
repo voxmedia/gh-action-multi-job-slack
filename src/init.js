@@ -45,7 +45,7 @@ async function init(github_token) {
     repo,
     run_id
   });
-  console.log({ octo_jobs });
+  console.log({ jobs: octo_jobs.jobs });
 
   var event = JSON.parse(fs.readFileSync(event_path, 'utf8'));
   console.log({ event })
