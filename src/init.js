@@ -29,7 +29,7 @@ function init(github_token) {
   const { data: octo_workflow } = octokit.actions.getWorkflow({
     owner,
     repo,
-    workflow_id: workflow
+    workflow_id: run_id
   });
   console.log({ octo_workflow });
 
