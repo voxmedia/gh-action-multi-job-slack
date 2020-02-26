@@ -15,6 +15,6 @@ outputs:
     description: 'The timestamp for when the slack message was last updated.'
 runs:
   using: 'node12'
-  main: 'dist/index.js init'
-  post: 'dist/index.js update'
+  main: 'dist/init/index.js'
+  post: 'dist/update/index.js'
   post-if: always()

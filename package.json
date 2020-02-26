@@ -2,11 +2,11 @@
   "name": "javascript-action",
   "version": "0.1.0",
   "description": "Single slack message notifications for Github workflows with more than one job. Updates as your jobs run.",
-  "main": "index.js",
+  "main": "dist/init/index.js",
   "scripts": {
-    "lint": "eslint index.js",
-    "package": "ncc build index.js -o dist",
-    "test": "eslint index.js && jest"
+    "lint": "eslint src/*",
+    "package": "ncc build src/init.js -o dist/init && ncc build src/update.js -o dist/update",
+    "test": "eslint src/* && jest"
   },
   "repository": {
     "type": "git",

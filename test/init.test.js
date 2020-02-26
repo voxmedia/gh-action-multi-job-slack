@@ -2,6 +2,9 @@ const process = require('process');
 const child_process = require('child_process');
 const path = require('path');
 
+test('Expect true to equal true', () => {
+  expect(true).toEqual(true)
+})
 
 // For some reasons, these all fail with:
 //    "Command failed: node /Users/jason.ormand/Projects/gh-action-multi-job-slack/index.js"
