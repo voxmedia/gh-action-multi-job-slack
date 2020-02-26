@@ -26,12 +26,12 @@ async function init(github_token) {
     event_path: event_path
   })
 
-  const { data: octo_workflow } = await octokit.actions.getWorkflow({
-    owner,
-    repo,
-    workflow_id: run_id
-  });
-  console.log({ octo_workflow });
+  // const { data: octo_workflow } = await octokit.actions.getWorkflow({
+  //   owner,
+  //   repo,
+  //   workflow_id: run_id
+  // });
+  // console.log({ octo_workflow });
 
   const { data: octo_workflow_run } = await octokit.actions.getWorkflowRun({
     owner,
