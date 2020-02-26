@@ -8025,8 +8025,10 @@ const core = __webpack_require__(470);
 const github = __webpack_require__(469);
 var fs = __webpack_require__(747);
 
-function init(){
+function init(github_token) {
   console.log("Initing!")
+
+  const octokit = new github.GitHub(github_token);
 
   const repo_path = process.env.GITHUB_REPOSITORY
   const owner = repo_path.split('/')[0]
@@ -8082,7 +8084,7 @@ async function run() {
     if (!slack_channel) throw new Error("You must supply a SLACK_CHANNEL")
     if (!github_token) throw new Error("You must supply a GITHUB_TOKEN")
 
-    init()
+    init(github_token)
 
     core.setOutput('updated_at', (new Date).toUTCString());
   }
