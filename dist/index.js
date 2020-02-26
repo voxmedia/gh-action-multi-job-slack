@@ -512,6 +512,9 @@ async function run() {
     const slack_channel = core.getInput('slack_channel') || process.env.SLACK_CHANNEL;
     const github_token = core.getInput('github_token') || process.env.GITHUB_TOKEN;
 
+    const context = github.context;
+    console.log({ context: context })
+
     if (!work) throw new Error("You must support work param")
     if (!slack_bot_token) throw new Error("You must supply a SLACK_BOT_TOKEN")
     if (!slack_channel) throw new Error("You must supply a SLACK_CHANNEL")
