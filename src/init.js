@@ -33,12 +33,12 @@ async function init(github_token) {
   // });
   // console.log({ octo_workflow });
 
-  const { data: octo_workflow_run } = await octokit.actions.getWorkflowRun({
-    owner,
-    repo,
-    run_id
-  });
-  console.log({ octo_workflow_run });
+  // const { data: octo_workflow_run } = await octokit.actions.getWorkflowRun({
+  //   owner,
+  //   repo,
+  //   run_id
+  // });
+  // console.log({ octo_workflow_run });
 
   const { data: octo_jobs } = await octokit.actions.listJobsForWorkflowRun({
     owner,
@@ -47,8 +47,8 @@ async function init(github_token) {
   });
   console.log({ jobs: octo_jobs.jobs });
 
-  var event = JSON.parse(fs.readFileSync(event_path, 'utf8'));
-  console.log({ event })
+  // var event = JSON.parse(fs.readFileSync(event_path, 'utf8'));
+  // console.log({ event })
 }
 
 async function run() {
