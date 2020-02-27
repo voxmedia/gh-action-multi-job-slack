@@ -16,5 +16,5 @@ outputs:
 runs:
   using: 'node12'
   main: 'dist/init/index.js'
-  post: 'dist/update/index.js'
+  post: 'dist/init/index.js'
   post-if: always()
