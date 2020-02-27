@@ -8965,6 +8965,10 @@ async function init() {
     return `${style.sym} ${job.name}`
   })
 
+  // debug
+  console.log({ messages })
+  console.log({ jobs })
+
   const jobsBlock = {
     "type": "section",
     "text": {
