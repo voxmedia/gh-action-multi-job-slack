@@ -8916,7 +8916,7 @@ function createStateFile(ts) {
 }
 
 async function uploadeStateFile() {
-  await artifact_client.uploadArtifact(state_file, [state_file])
+  await artifact_client.uploadArtifact(state_file, [state_file], '.')
 }
 
 async function init() {
