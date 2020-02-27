@@ -8989,6 +8989,11 @@ async function init() {
   createMessage(params)
 }
 
+process.on('unhandledRejection', error => {
+  core.setFailed(error.message)
+  console.log('unhandledRejection', error.message);
+});
+
 async function run() {
   try {
     if (!slack_bot_token) throw new Error("You must supply a SLACK_BOT_TOKEN")
