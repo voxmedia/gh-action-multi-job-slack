@@ -18,7 +18,7 @@ function getBranchOrTag(target_type) {
   const ref = process.env.GITHUB_REF;
   if (!ref) return null
   const regexs = {
-    branch: /refs\/head\//,
+    branch: /refs\/heads\//,
     tag: /refs\/tags\//
   }
   const regex = regexs[target_type]
@@ -56,11 +56,6 @@ async function init() {
   // Init slack message
   const branch = getBranchOrTag('branch')
   const tag = getBranchOrTag('tag')
-
-  // debug
-  console.log({ branch, tag })
-  console.log(process.env)
-
   const repo_url = `https://github.com/${repo_path}`
   const branch_url = `https://github.com/${repo_path}/tree/${branch}`
   const tag_url = `https://github.com/${repo_path}/releases/tag/${tag}`
