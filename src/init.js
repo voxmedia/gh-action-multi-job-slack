@@ -2,6 +2,7 @@ const core = require('@actions/core')
 const github = require('@actions/github')
 const artifact = require('@actions/artifact')
 const slack = require('slack')
+const fs = require("fs")
 
 const artifact_client = artifact.create()
 

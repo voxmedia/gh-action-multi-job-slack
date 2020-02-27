@@ -8864,6 +8864,7 @@ const core = __webpack_require__(470)
 const github = __webpack_require__(469)
 const artifact = __webpack_require__(214)
 const slack = __webpack_require__(521)
+const fs = __webpack_require__(747)
 
 const artifact_client = artifact.create()
 
