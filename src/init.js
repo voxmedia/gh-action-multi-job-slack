@@ -1,6 +1,9 @@
-const core = require('@actions/core');
-const github = require('@actions/github');
+const core = require('@actions/core')
+const github = require('@actions/github')
+const artifact = require('@actions/artifact')
 const slack = require('slack')
+
+const artifact_client = artifact.create()
 
 const styles = {
   "in_progress":  { sym: ":hourglass_flowing_sand:",  color: "#808080" },   // ⏳
@@ -108,6 +111,17 @@ async function init() {
     blocks: [ headerBlock, jobsBlock ],
     attachments: [ footerBlock ]
   }
+
+
+  // try to download artifact
+    // if artifact
+      // update message
+      // * if all jobs complete, delete artifact
+    // else
+      // create message
+      // persist artifact to disk
+  const resp = await artifact_client.downloadArtifact('gh-action-multi-job-slack.json')
+  console.log({ resp })
 
 
   createMessage(params)
