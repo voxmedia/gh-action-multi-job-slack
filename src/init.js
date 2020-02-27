@@ -1,13 +1,41 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
-var fs = require('fs');
+const slack = require('slack')
 
-async function init(github_token) {
+const symbols = {
+  "in_progress":  { sym: ":hourglass_flowing_sand:",  color: "#808080" },   // ⏳
+  "started":      { sym: ":hourglass_flowing_sand:",  color: "#808080" },   // ⏳
+  "success":      { sym: ":white_check_mark:",        color: "#33cc33" },   // ✅
+  "canceled":     { sym: ":heavy_minus_sign:",        color: "#ff9900" },   // ➖
+  "failed":       { sym: ":x:",                       color: "#ff0000" }    // ❌
+}
+
+function getBranchOrTag(target_type) {
+  if (!process.env.GITHUB_REF) return null
+  const regexs = {
+    branch: /refs\/head\//,
+    tag: /refs\/tags\//
+  }
+  const regex = regexs[target_type]
+  if (ref.match(regex)) {
+    return ref.replace(regex, '')
+  } else {
+    return null
+  }
+}
+
+function createMessage(params) {
+  const bot = new Slack({ token: slack_bot_token })
+  bot.chat.postMessage(params).then(function(slackResponse) {
+    console.log({ slackResponse })
+  }).catch(function(error) { console.log(error) })
+}
+
+async function init(slack_bot_token, slack_channel, github_token) {
   console.log("Initing!")
 
-  const octokit = new github.GitHub(github_token);
-
   // Required for API requests
+  const octokit = new github.GitHub(github_token)
   const repo_path = process.env.GITHUB_REPOSITORY
   const owner = repo_path.split('/')[0]
   const repo = repo_path.split('/')[1]
@@ -17,28 +45,67 @@ async function init(github_token) {
   const actor = process.env.GITHUB_ACTOR
   const event_name = process.env.GITHUB_EVENT_NAME
   const workflow = process.env.GITHUB_WORKFLOW
-  const branch_or_tag = process.env.GITHUB_REF
+  const branch = getBranchOrTag('branch')
+  const tag = getBranchOrTag('tag')
+  const repo_name = process.env.GITHUB_REPOSITORY.split('/')[1]
+  const sha = process.env.GITHUB_SHA
 
-  // Debug
-  console.log({
-    repo: repo,
-    workflow: workflow,
-    run_id: run_id,
-    actor: actor,
-    event_name: event_name,
-    branch_or_tag: branch_or_tag
-  })
+  // Init slack message
+  const repo_url = `https://github.com/${repo_path}`
+  const branch_url = branch ? `https://github.com/${repo_path}/tree/${branch}` : null
+  const tag_url = tag ? `https://github.com/${repo_path}/releases/tag/${tag}` : null
+  const ref_label = branch ? 'Branch' : 'Tag'
+  const ref_link = branch ? `<${branch_url}|${branch}>` : `<${tag_url}|${tag}>`
+  const headerBlock = {
+    "type": "section",
+    "fields": [
+      { "type": "mrkdwn", "text": `*Repo:* <${repo_url}|${repo_name}>` },
+      { "type": "mrkdwn", "text": `*${ref_label}:* ${ref_link}` },
+      { "type": "mrkdwn", "text": `*Workflow:* <https://github.com/${repo_path}/commit/${sha}/checks?check_suite_id=${run_id}|${workflow}>` },
+      { "type": "mrkdwn", "text": `*Actor:* <https://github.com/${actor}|${actor}>` }
+    ]
+  }
 
-  const { data: octo_jobs } = await octokit.actions.listJobsForWorkflowRun({
+  const { data: { jobs: jobs } } = await octokit.actions.listJobsForWorkflowRun({
     owner,
     repo,
     run_id
   });
 
-  // Debug
-  console.log({ jobs: JSON.stringify(octo_jobs.jobs, null, '\t') });
-  // octo_jobs.jobs.forEach(job => console.log(job));
+  const messages = jobs.map(function(job) {
+    const sym = symbols[job.conclusion] || symbols[job.status]
+    return `${sym} ${job.name}`
+  })
 
+  const jobsBlock = {
+    "type": "section",
+    "text": {
+      "type": "mrkdwn",
+      "text": messages.join(' \n\n')
+    }
+  }
+
+  const footerBlock = {
+    "mrkdwn_in": ["text"],
+    "color": "#cccccc",
+    "fields": [
+      `Updated at: ${new Date().toUTCString()} \n`,
+      `Execution time: ${'tktktk'} \n`
+    ],
+    "footer": ""
+  }
+
+  const params = {
+    username: "GH Actions Bot",
+    icon_url: "https://i.imgur.com/o3KKCib.png",
+    channel: slack_channel,
+    text: '',
+    blocks: [ headerBlock, jobsBlock ],
+    attachments: [ footerBlock ]
+  }
+
+
+  createMessage(params)
 }
 
 async function run() {
@@ -51,7 +118,7 @@ async function run() {
     if (!slack_channel) throw new Error("You must supply a SLACK_CHANNEL")
     if (!github_token) throw new Error("You must supply a GITHUB_TOKEN")
 
-    init(github_token)
+    init(slack_bot_token, slack_channel, github_token)
 
     core.setOutput('updated_at', (new Date).toUTCString());
   }
