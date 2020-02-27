@@ -8982,7 +8982,7 @@ async function init() {
     // else
       // create message
       // persist artifact to disk
-  const resp = await artifact_client.downloadArtifact('gh-action-multi-job-slack.json')
+  const resp = await artifact_client.downloadArtifact('gh-action-multi-job-slack.json').catch(() => {})
   console.log({ resp })
 
 
