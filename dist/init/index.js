@@ -8435,7 +8435,7 @@ async function init(slack_bot_token, slack_channel, github_token) {
   }
 
 
-  createMessage(params)
+  createMessage(params, slack_bot_token)
 }
 
 async function run() {
