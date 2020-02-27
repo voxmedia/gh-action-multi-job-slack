@@ -8049,29 +8049,14 @@ async function init(github_token) {
     event_path: event_path
   })
 
-  // const { data: octo_workflow } = await octokit.actions.getWorkflow({
-  //   owner,
-  //   repo,
-  //   workflow_id: run_id
-  // });
-  // console.log({ octo_workflow });
-
-  // const { data: octo_workflow_run } = await octokit.actions.getWorkflowRun({
-  //   owner,
-  //   repo,
-  //   run_id
-  // });
-  // console.log({ octo_workflow_run });
-
   const { data: octo_jobs } = await octokit.actions.listJobsForWorkflowRun({
     owner,
     repo,
     run_id
   });
-  console.log({ jobs: octo_jobs.jobs });
+  console.log({ jobs: JSON.stringify(octo_jobs.jobs) });
 
-  // var event = JSON.parse(fs.readFileSync(event_path, 'utf8'));
-  // console.log({ event })
+
 }
 
 async function run() {
