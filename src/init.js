@@ -98,7 +98,7 @@ async function init() {
     ]
   }
 
-  await wait(parseInt(5000));
+  await wait(parseInt(20000));
   const { data: { jobs: jobs } } = await octokit.actions.listJobsForWorkflowRun({
     owner,
     repo,
