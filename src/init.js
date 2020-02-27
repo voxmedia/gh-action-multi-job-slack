@@ -11,7 +11,8 @@ const symbols = {
 }
 
 function getBranchOrTag(target_type) {
-  if (!process.env.GITHUB_REF) return null
+  const ref = process.env.GITHUB_REF;
+  if (!ref) return null
   const regexs = {
     branch: /refs\/head\//,
     tag: /refs\/tags\//
