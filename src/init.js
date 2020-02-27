@@ -7,23 +7,26 @@ async function init(github_token) {
 
   const octokit = new github.GitHub(github_token);
 
+  // Required for API requests
   const repo_path = process.env.GITHUB_REPOSITORY
   const owner = repo_path.split('/')[0]
   const repo = repo_path.split('/')[1]
-  const workflow = process.env.GITHUB_WORKFLOW
   const run_id = process.env.GITHUB_RUN_ID
-  const run_number = process.env.GITHUB_RUN_NUMBER
+
+  // Required for slack message
   const actor = process.env.GITHUB_ACTOR
   const event_name = process.env.GITHUB_EVENT_NAME
-  const event_path = process.env.GITHUB_EVENT_PATH
+  const workflow = process.env.GITHUB_WORKFLOW
+  const branch_or_tag = process.env.GITHUB_REF
+
+  // Debug
   console.log({
     repo: repo,
     workflow: workflow,
     run_id: run_id,
-    run_number: run_number,
     actor: actor,
     event_name: event_name,
-    event_path: event_path
+    branch_or_tag: branch_or_tag
   })
 
   const { data: octo_jobs } = await octokit.actions.listJobsForWorkflowRun({
@@ -31,8 +34,10 @@ async function init(github_token) {
     repo,
     run_id
   });
-  console.log({ jobs: JSON.stringify(octo_jobs.jobs) });
 
+  // Debug
+  console.log({ jobs: JSON.stringify(octo_jobs.jobs, null, '\t') });
+  // octo_jobs.jobs.forEach(job => console.log(job));
 
 }
 
