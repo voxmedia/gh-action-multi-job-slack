@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const slack = require('slack')
 
-const symbols = {
+const styles = {
   "in_progress":  { sym: ":hourglass_flowing_sand:",  color: "#808080" },   // ⏳
   "started":      { sym: ":hourglass_flowing_sand:",  color: "#808080" },   // ⏳
   "success":      { sym: ":white_check_mark:",        color: "#33cc33" },   // ✅
@@ -78,8 +78,8 @@ async function init() {
   });
 
   const messages = jobs.map(function(job) {
-    const sym = symbols[job.conclusion] || symbols[job.status]
-    return `${sym} ${job.name}`
+    const style = styles[job.conclusion] || styles[job.status]
+    return `${style.sym} ${job.name}`
   })
 
   const jobsBlock = {
