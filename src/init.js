@@ -5,6 +5,8 @@ const slack = require('slack')
 
 const artifact_client = artifact.create()
 
+const state_file = 'gh-action-multi-job-slack.json'
+
 const styles = {
   "in_progress":  { sym: ":hourglass_flowing_sand:",  color: "#808080" },   // ⏳
   "started":      { sym: ":hourglass_flowing_sand:",  color: "#808080" },   // ⏳
@@ -32,11 +34,26 @@ function getBranchOrTag(target_type) {
   }
 }
 
-function createMessage(params) {
+async function updateMessage(params, state) {
   const bot = new slack({ token: slack_bot_token })
-  bot.chat.postMessage(params).then(function(slackResponse) {
-    console.log({ slackResponse: JSON.stringify(slackResponse, null, '\t') })
-  }).catch(function(error) { console.log(error) })
+  params.ts = state.ts
+  bot.chat.update(params)
+}
+
+async function createMessage(params) {
+  const bot = new slack({ token: slack_bot_token })
+  bot.chat.postMessage(params).then(function(response) {
+    createStateFile(response.message.ts)
+    uploadeStateFile()
+  })
+}
+
+function createStateFile(ts) {
+  fs.writeFileSync(state_file, JSON.stringify({ ts }))
+}
+
+async function uploadeStateFile() {
+  await artifact_client.uploadArtifact(state_file, [state_file])
 }
 
 async function init() {
@@ -96,11 +113,11 @@ async function init() {
   const footerBlock = {
     "mrkdwn_in": ["text"],
     "color": "#cccccc",
-    "fields": [
-      `Updated at: ${new Date().toUTCString()} \n`,
-      `Execution time: ${'tktktk'} \n`
-    ],
-    "footer": ""
+    "fields": [],
+    "footer": [
+      `*Updated at:* ${new Date().toUTCString()} \n`,
+      `*Execution time:* ${'tktktk'} \n`
+    ].join('')
   }
 
   const params = {
@@ -112,19 +129,14 @@ async function init() {
     attachments: [ footerBlock ]
   }
 
-
-  // try to download artifact
-    // if artifact
-      // update message
-      // * if all jobs complete, delete artifact
-    // else
-      // create message
-      // persist artifact to disk
-  const resp = await artifact_client.downloadArtifact('gh-action-multi-job-slack.json').catch(() => {})
-  console.log({ resp })
-
-
-  createMessage(params)
+  const resp = await artifact_client.downloadArtifact(state_file).catch(() => {})
+  if (resp) {
+    const state = JSON.parse(fs.readFileSync(state_file, 'utf8'))
+    updateMessage(params, state)
+    // * if possible, detect if all jobs complete * delete artifact
+  } else {
+    createMessage(params)
+  }
 }
 
 process.on('unhandledRejection', error => {
