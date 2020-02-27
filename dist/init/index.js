@@ -8990,8 +8990,7 @@ async function init() {
 }
 
 process.on('unhandledRejection', error => {
-  core.setFailed(error.message)
-  console.log('unhandledRejection', error.message);
+  core.setFailed(` Unhandled Rejection: ${error.message}`)
 });
 
 async function run() {
