@@ -26,7 +26,7 @@ function getBranchOrTag(target_type) {
 }
 
 function createMessage(params) {
-  const bot = new Slack({ token: slack_bot_token })
+  const bot = new slack({ token: slack_bot_token })
   bot.chat.postMessage(params).then(function(slackResponse) {
     console.log({ slackResponse })
   }).catch(function(error) { console.log(error) })
