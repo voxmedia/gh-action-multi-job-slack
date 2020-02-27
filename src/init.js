@@ -50,15 +50,15 @@ async function init() {
   const actor = process.env.GITHUB_ACTOR
   const event_name = process.env.GITHUB_EVENT_NAME
   const workflow = process.env.GITHUB_WORKFLOW
-  const branch = getBranchOrTag('branch')
-  const tag = getBranchOrTag('tag')
   const repo_name = process.env.GITHUB_REPOSITORY.split('/')[1]
   const sha = process.env.GITHUB_SHA
 
   // Init slack message
+  const branch = getBranchOrTag('branch')
+  const tag = getBranchOrTag('tag')
   const repo_url = `https://github.com/${repo_path}`
-  const branch_url = branch ? `https://github.com/${repo_path}/tree/${branch}` : null
-  const tag_url = tag ? `https://github.com/${repo_path}/releases/tag/${tag}` : null
+  const branch_url = `https://github.com/${repo_path}/tree/${branch}`
+  const tag_url = `https://github.com/${repo_path}/releases/tag/${tag}`
   const ref_label = branch ? 'Branch' : 'Tag'
   const ref_link = branch ? `<${branch_url}|${branch}>` : `<${tag_url}|${tag}>`
   const headerBlock = {
