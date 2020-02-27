@@ -8882,6 +8882,12 @@ const slack_bot_token = core.getInput('slack_bot_token') || process.env.SLACK_BO
 const slack_channel = core.getInput('slack_channel') || process.env.SLACK_CHANNEL;
 const github_token = core.getInput('github_token') || process.env.GITHUB_TOKEN;
 
+function wait(ms) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve("done!"), ms)
+  });
+}
+
 function getBranchOrTag(target_type) {
   const ref = process.env.GITHUB_REF;
   if (!ref) return null
@@ -8954,6 +8960,7 @@ async function init() {
     ]
   }
 
+  await wait(parseInt(5000));
   const { data: { jobs: jobs } } = await octokit.actions.listJobsForWorkflowRun({
     owner,
     repo,
