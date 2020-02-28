@@ -8960,7 +8960,6 @@ async function init() {
     ]
   }
 
-  await wait(parseInt(20000));
   const { data: { jobs: jobs } } = await octokit.actions.listJobsForWorkflowRun({
     owner,
     repo,
@@ -8973,8 +8972,23 @@ async function init() {
   })
 
   // debug
+  const { data: workflow_run } = await octokit.actions.getWorkflowRun({
+    owner,
+    repo,
+    run_id
+  });
+  let fetched_jobs = []
+  jobs.forEach(function(job) {
+    octokit.actions.getWorkflowJob({
+      owner,
+      repo,
+      job_id: job.id
+    });
+  })
   console.log({ messages })
   console.log({ jobs })
+  console.log({ fetched_jobs })
+  console.log({ workflow_run })
 
   const jobsBlock = {
     "type": "section",
