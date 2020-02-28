@@ -120,30 +120,9 @@ async function init() {
     'Slack end'
   ]
   const messages = jobs.filter(j => !exclude_jobs.includes(j.name)).map(function(job) {
-
-    // debug
-    console.log({ job_conclusion: job.conclusion })
-    console.log({ job_status: job.status })
-
     const style = styles[job.conclusion] || styles[job.status]
     return `${style.sym} ${job.name}`
   })
-
-  // debug
-  const { data: workflow_run } = await octokit.actions.getWorkflowRun({
-    owner,
-    repo,
-    run_id
-  });
-  let fetched_jobs = []
-  jobs.forEach(function(job) {
-    job.steps.forEach(function(step) {
-      console.log({ job_name: job.name, job_id: job.id, step: JSON.stringify(step) })
-    })
-  })
-  console.log({ messages })
-  console.log({ jobs })
-  console.log({ workflow_run })
 
   const jobsBlock = {
     "type": "section",
@@ -153,13 +132,25 @@ async function init() {
     }
   }
 
+  function msToMinSec(ms) {
+    const minutes = Math.floor(ms / 60000)
+    const seconds = ((ms % 60000) / 1000).toFixed(0)
+    const pad = seconds < 10 ? '0' : ''
+    return `${minutes} minutes ${pad}${seconds} seconds`
+  }
+  const { data: workflow_run } = await octokit.actions.getWorkflowRun({
+    owner,
+    repo,
+    run_id
+  });
+  const execution_time = Date.parse(workflow_run.updated_at) - Date.parse(workflow_run.created_at)
   const footerBlock = {
     "mrkdwn_in": ["text"],
     "color": "#cccccc",
     "fields": [],
     "footer": [
       `*Updated at:* ${new Date().toUTCString()} \n`,
-      `*Execution time:* ${'tktktk'} \n`
+      `*Execution time:* ${msToMinSec(execution_time)} \n`
     ].join('')
   }
 
@@ -193,8 +184,6 @@ async function run() {
     if (!github_token) throw new Error("You must supply a GITHUB_TOKEN")
 
     init()
-
-    core.setOutput('updated_at', (new Date).toUTCString());
   }
   catch (error) {
     core.setFailed(error.message);
