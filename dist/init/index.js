@@ -8979,11 +8979,12 @@ async function init() {
   });
   let fetched_jobs = []
   jobs.forEach(function(job) {
-    octokit.actions.getWorkflowJob({
+    const { data: fetched_job } = octokit.actions.getWorkflowJob({
       owner,
       repo,
       job_id: job.id
     });
+    fetched_jobs.push(fetched_job)
   })
   console.log({ messages })
   console.log({ jobs })
