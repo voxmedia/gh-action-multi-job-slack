@@ -8966,7 +8966,18 @@ async function init() {
     run_id
   });
 
-  const messages = jobs.map(function(job) {
+  // Don't show the status of jobs
+  // named any of these values
+  const exclude_jobs = [
+    'end_slack',
+    'End slack',
+    'End slack message',
+    'end slack',
+    'end slack message',
+    'slack end',
+    'Slack end'
+  ]
+  const messages = jobs.filter(j => !exclude_jobs.includes(j.name)).map(function(job) {
     const style = styles[job.conclusion] || styles[job.status]
     return `${style.sym} ${job.name}`
   })
