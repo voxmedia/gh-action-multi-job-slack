@@ -8870,12 +8870,16 @@ const artifact_client = artifact.create()
 
 const state_file = 'gh-action-multi-job-slack.json'
 
+// status: completed, in_progress, queued
+// conclusion: success, failure
 const styles = {
+  // styled statuses
   "in_progress":  { sym: ":hourglass_flowing_sand:",  color: "#808080" },   // ⏳
-  "started":      { sym: ":hourglass_flowing_sand:",  color: "#808080" },   // ⏳
+  "queued":       { sym: ":hourglass_flowing_sand:",  color: "#808080" },   // ⏳
+  // styled conclusions
   "success":      { sym: ":white_check_mark:",        color: "#33cc33" },   // ✅
-  "canceled":     { sym: ":heavy_minus_sign:",        color: "#ff9900" },   // ➖
-  "failed":       { sym: ":x:",                       color: "#ff0000" }    // ❌
+  "cancelled":    { sym: ":heavy_minus_sign:",        color: "#ff9900" },   // ➖
+  "failure":      { sym: ":x:",                       color: "#ff0000" }    // ❌
 }
 
 const slack_bot_token = core.getInput('slack_bot_token') || process.env.SLACK_BOT_TOKEN;
@@ -8979,6 +8983,8 @@ async function init() {
   ]
   const messages = jobs.filter(j => !exclude_jobs.includes(j.name)).map(function(job) {
 
+    // debug
+    console.log({ job_conclusion: job.conclusion })
     console.log({ job_status: job.status })
 
     const style = styles[job.conclusion] || styles[job.status]
