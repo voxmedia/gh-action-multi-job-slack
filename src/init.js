@@ -155,8 +155,6 @@ async function init() {
   }
 
   const params = {
-    username: "GH Actions Bot",
-    icon_url: "https://i.imgur.com/o3KKCib.png",
     channel: slack_channel,
     text: '',
     blocks: [ headerBlock, jobsBlock ],
