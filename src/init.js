@@ -116,6 +116,9 @@ async function init() {
     'Slack end'
   ]
   const messages = jobs.filter(j => !exclude_jobs.includes(j.name)).map(function(job) {
+
+    console.log({ job_status: job.status })
+
     const style = styles[job.conclusion] || styles[job.status]
     return `${style.sym} ${job.name}`
   })
