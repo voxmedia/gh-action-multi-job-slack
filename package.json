@@ -1,33 +1,40 @@
 {
-  "name": "javascript-action",
-  "version": "1.0.0",
-  "description": "JavaScript Action Template",
-  "main": "index.js",
+  "name": "gh-action-multi-job-slack",
+  "version": "0.1.0",
+  "description": "Single slack message notifications for Github workflows with more than one job. Updates as your jobs run.",
+  "main": "dist/init/index.js",
   "scripts": {
-    "lint": "eslint index.js",
-    "package": "ncc build index.js -o dist",
-    "test": "eslint index.js && jest"
+    "lint": "eslint src/*",
+    "package": "ncc build src/init.js -o dist/init && ncc build src/update.js -o dist/update",
+    "test": "eslint src/* && jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/javascript-action.git"
+    "url": "git+https://github.com/voxmedia/gh-action-multi-job-slack.git"
   },
   "keywords": [
     "GitHub",
     "Actions",
-    "JavaScript"
+    "Slack",
+    "Multiple",
+    "Jobs"
   ],
-  "author": "GitHub",
+  "author": "Jason Ormand",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/actions/javascript-action/issues"
+    "url": "https://github.com/voxmedia/gh-action-multi-job-slack/issues"
   },
-  "homepage": "https://github.com/actions/javascript-action#readme",
+  "homepage": "https://github.com/voxmedia/gh-action-multi-job-slack#readme",
   "dependencies": {
-    "@actions/core": "^1.1.1"
+    "@actions/artifact": "^0.1.0",
+    "@actions/core": "^1.1.1",
+    "@actions/github": "^2.1.1",
+    "@actions/io": "^1.0.2",
+    "slack": "^11.0.2"
   },
   "devDependencies": {
     "@zeit/ncc": "^0.20.5",
+    "acorn": "^7.1.0",
     "eslint": "^6.3.0",
     "jest": "^24.9.0"
   }
