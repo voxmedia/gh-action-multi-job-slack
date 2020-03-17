@@ -117,7 +117,14 @@ async function init() {
     'end slack',
     'end slack message',
     'slack end',
-    'Slack end'
+    'Slack end',
+    'start_slack',
+    'Start slack',
+    'Start slack message',
+    'start slack',
+    'start slack message',
+    'slack start',
+    'Slack start'
   ]
   const messages = jobs.filter(j => !exclude_jobs.includes(j.name)).map(function(job) {
     const style = styles[job.conclusion] || styles[job.status]
