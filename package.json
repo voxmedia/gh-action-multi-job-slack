@@ -1,11 +1,11 @@
 {
   "name": "gh-action-multi-job-slack",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Single slack message notifications for Github workflows with more than one job. Updates as your jobs run.",
-  "main": "dist/init/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "lint": "eslint src/*",
-    "package": "ncc build src/init.js -o dist/init && ncc build src/update.js -o dist/update",
+    "package": "ncc build src/index.js -o dist",
     "test": "eslint src/* && jest"
   },
   "repository": {
@@ -22,7 +22,7 @@
   "author": "Jason Ormand",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/voxmedia/gh-action-multi-job-slack/issues"
+    "url": "https://github.com/voxmedia/gh-action-multi-job-slack/pulls"
   },
   "homepage": "https://github.com/voxmedia/gh-action-multi-job-slack#readme",
   "dependencies": {

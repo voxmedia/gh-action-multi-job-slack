@@ -1,20 +1,15 @@
 name: 'Multi-job Slack notifications'
-description: 'Single slack message notifications for Github workflows with more than one job. Updates as your jobs run.'
+description: 'Single slack message notification for Github workflows with more than one job. Updates as your jobs run.'
 inputs:
   slack_bot_token:
-    description: 'Slack token used to post to your channel.'
+    description: 'Slack token used to post to your channel. Env also accepted, ex: SLACK_BOT_TOKEN: <token>'
     required: true
   slack_channel:
-    description: 'ID or string for the target Slack channel.'
+    description: 'ID or string for the target Slack channel. Env also accepted, ex: SLACK_CHANNEL: <channel>'
     required: true
-  job:
-    description: 'Current Job JSON'
+  github_token:
+    description: 'Github token for querying the API, to get job statuses. Env also accepted, ex: GITHUB_TOKEN: <token>'
     required: true
-outputs:
-  updated_at:
-    description: 'The timestamp for when the slack message was last updated.'
 runs:
   using: 'node12'
-  main: 'dist/init/index.js'
-  post: 'dist/init/index.js'
-  post-if: always()
+  main: 'dist/index.js'
