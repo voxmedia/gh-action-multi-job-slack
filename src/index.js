@@ -68,8 +68,6 @@ async function uploadeStateFile() {
 }
 
 async function init() {
-  console.log("Initing!")
-
   // Required for API requests
   const octokit = new github.GitHub(github_token)
   const repo_path = process.env.GITHUB_REPOSITORY
@@ -130,6 +128,11 @@ async function init() {
     const style = styles[job.conclusion] || styles[job.status]
     return `${style.sym} ${job.name}`
   })
+
+  if (messages.length < 1) {
+    console.log("No jobs/messages to report on.")
+    process.exit(0);
+  }
 
   const jobsBlock = {
     "type": "section",
