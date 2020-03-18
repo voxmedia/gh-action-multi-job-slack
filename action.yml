@@ -3,13 +3,13 @@ description: 'Single slack message notification for Github workflows with more t
 inputs:
   slack_bot_token:
     description: 'Slack token used to post to your channel. Env also accepted, ex: SLACK_BOT_TOKEN: <token>'
-    required: true
+    required: false
   slack_channel:
     description: 'ID or string for the target Slack channel. Env also accepted, ex: SLACK_CHANNEL: <channel>'
-    required: true
+    required: false
   github_token:
     description: 'Github token for querying the API, to get job statuses. Env also accepted, ex: GITHUB_TOKEN: <token>'
-    required: true
+    required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'
